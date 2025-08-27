@@ -8,7 +8,8 @@ const userLimiter = rateLimit({
   max: 3,
 
   // Custom message for this specific rate limit.
-  message: 'Too many user account action requests from this IP. Please wait a few minutes and try again.',
+  message:
+    "Too many user account action requests from this IP. Please wait a few minutes and try again.",
 
   // Standard and legacy headers are also configured here.
   standardHeaders: true,

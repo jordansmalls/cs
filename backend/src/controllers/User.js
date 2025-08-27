@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import validator from 'validator';
+import validator from "validator";
 
 /**
  * @desc    Update user profile
@@ -19,7 +19,7 @@ export const updateProfile = async (req, res) => {
     // Check if at least one field is provided
     if (!username && !email) {
       return res.status(400).json({
-        message: "Please provide at least one field to update."
+        message: "Please provide at least one field to update.",
       });
     }
 
@@ -30,7 +30,7 @@ export const updateProfile = async (req, res) => {
 
     if (username && (username.length < 3 || username.length > 20)) {
       return res.status(400).json({
-        message: "Username must be between 3 and 20 characters."
+        message: "Username must be between 3 and 20 characters.",
       });
     }
 
@@ -48,7 +48,7 @@ export const updateProfile = async (req, res) => {
     if (trimmedUsername && trimmedUsername !== user.username) {
       const usernameExists = await User.findOne({
         username: trimmedUsername,
-        _id: { $ne: user._id }
+        _id: { $ne: user._id },
       });
 
       if (usernameExists) {
@@ -82,7 +82,6 @@ export const updateProfile = async (req, res) => {
       createdAt: updatedUser.createdAt,
       updatedAt: updatedUser.updatedAt,
     });
-
   } catch (err) {
     console.error("Profile update error:", err);
 
@@ -118,10 +117,11 @@ export const getProfile = async (req, res) => {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     });
-
   } catch (err) {
     console.error("Profile fetch error:", err);
-    return res.status(500).json({ message: "Error fetching profile, please try again soon." });
+    return res
+      .status(500)
+      .json({ message: "Error fetching profile, please try again soon." });
   }
 };
 
@@ -145,16 +145,17 @@ export const deleteProfile = async (req, res) => {
     // Clear the JWT cookie
     res.cookie("jwt", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       expires: new Date(0),
     });
 
     res.status(200).json({ message: "Account deactivated successfully." });
-
   } catch (err) {
     console.error("Profile deletion error:", err);
-    return res.status(500).json({ message: "Error deleting profile, please try again soon." });
+    return res
+      .status(500)
+      .json({ message: "Error deleting profile, please try again soon." });
   }
 };
 
@@ -169,17 +170,17 @@ export const changePassword = async (req, res) => {
 
     if (!currentPassword || !newPassword) {
       return res.status(400).json({
-        message: "Current password and new password are required."
+        message: "Current password and new password are required.",
       });
     }
 
     if (newPassword.length < 6) {
       return res.status(400).json({
-        message: "New password must be at least 6 characters."
+        message: "New password must be at least 6 characters.",
       });
     }
 
-    const user = await User.findById(req.user._id).select('+password');
+    const user = await User.findById(req.user._id).select("+password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
@@ -189,7 +190,9 @@ export const changePassword = async (req, res) => {
     const isCurrentPasswordValid = await user.matchPassword(currentPassword);
 
     if (!isCurrentPasswordValid) {
-      return res.status(400).json({ message: "Current password is incorrect." });
+      return res
+        .status(400)
+        .json({ message: "Current password is incorrect." });
     }
 
     // Set new password (will be hashed by pre-save middleware)
@@ -197,9 +200,10 @@ export const changePassword = async (req, res) => {
     await user.save();
 
     return res.status(200).json({ message: "Password updated successfully." });
-
   } catch (err) {
     console.error("Password change error:", err);
-    return res.status(500).json({ message: "Error changing password, please try again soon." });
+    return res
+      .status(500)
+      .json({ message: "Error changing password, please try again soon." });
   }
 };

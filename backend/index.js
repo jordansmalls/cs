@@ -10,12 +10,11 @@ import generalLimiter from "./src/utils/generalLimiter.js";
 
 // Routers
 import authRouter from "./src/routes/Auth.js";
-import userRouter from "./src/routes/User.js"
+import userRouter from "./src/routes/User.js";
 
 connectDB();
 const app = e();
 const PORT = process.env.PORT || 3030;
-
 
 // Trust proxy for rate limiting behind reverse proxy
 app.set("trust proxy", 1);
@@ -112,7 +111,6 @@ app.get("/health", (req, res) => {
 app.get("/test", (req, res) => {
   res.json({ status: 200, message: "API is live" });
 });
-
 
 // Catch-all 404 handler for any requests that do not match a route
 app.use((req, res) => {

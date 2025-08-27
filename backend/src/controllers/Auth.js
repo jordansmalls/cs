@@ -33,11 +33,9 @@ export const register = async (req, res) => {
 
   // Check for valid username characters
   if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-    return res
-      .status(400)
-      .json({
-        message: "Username can only contain letters, numbers, and underscores",
-      });
+    return res.status(400).json({
+      message: "Username can only contain letters, numbers, and underscores",
+    });
   }
 
   try {
